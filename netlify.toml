@@ -1,0 +1,9 @@
+# Netlify 静态部署（可选）
+# 将整个项目根目录作为网站发布，无需构建命令
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>幼儿园毕业 · 季已晴《有你就幸福》</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #fff9f0;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: #333;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* 浮动气球装饰 */
+  .balloons {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .balloon {
+    position: absolute;
+    bottom: -120px;
+    width: 40px;
+    height: 50px;
+    border-radius: 50%;
+    opacity: 0.18;
+    animation: floatUp linear infinite;
+  }
+  .balloon::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 12px;
+    background: currentColor;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 0.18; }
+    90%  { opacity: 0.18; }
+    100% { transform: translateY(-110vh) translateX(30px); opacity: 0; }
+  }
+
+  /* ========== 封面 ========== */
+  .cover {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #ffe0ec 0%, #fff3cd 50%, #d4f5ff 100%);
+    padding: 60px 20px 80px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,182,193,0.4) 0%, transparent 35%),
+      radial-gradient(circle at 85% 75%, rgba(173,216,230,0.4) 0%, transparent 35%),
+      radial-gradient(circle at 50% 50%, rgba(255,255,224,0.3) 0%, transparent 60%);
+  }
+  .cover-content { position: relative; z-index: 1; }
+
+  .cover-stars {
+    font-size: 2.5rem;
+    letter-spacing: 12px;
+    margin-bottom: 20px;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.6; transform: scale(0.95); }
+    to   { opacity: 1;   transform: scale(1.05); }
+  }
+
+  .cover-title {
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d, #ff8c42, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 6px;
+    line-height: 1.15;
+    text-shadow: none;
+    margin-bottom: 16px;
+  }
+  .cover-sub {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: #e05c8a;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+  .cover-song {
+    display: inline-block;
+    background: rgba(255,255,255,0.7);
+    border: 2px solid #ffb3cc;
+    border-radius: 40px;
+    padding: 10px 30px;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: #c0437a;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(6px);
+  }
+  .cover-song span { color: #ff6b35; }
+
+  .cover-hero {
+    width: min(480px, 85vw);
+    aspect-ratio: 3/4;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(255,100,150,0.35), 0 0 0 6px #fff, 0 0 0 10px #ffc0d4;
+    margin: 0 auto 30px;
+    animation: heroFloat 4s ease-in-out infinite;
+  }
+  @keyframes heroFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+  .cover-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  /* ========== 全屏自动轮播（垂直滑动轨道）========== */
+  .slideshow {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .slideshow-track {
+    transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  .slide {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1.5vh 1.5vw 7vh;
+    flex-shrink: 0;
+  }
+  .slide-content {
+    width: 100%;
+    max-width: min(1500px, 98vw);
+    margin: 0 auto;
+    transform-origin: center top;
+  }
+  .slide-content [class*="layout-"] {
+    max-width: 100%;
+    gap: 14px;
+    align-items: start;
+  }
+  .slide.section,
+  .slide.finale {
+    justify-content: flex-start;
+    padding-top: 1.5vh;
+  }
+  .slide.cover {
+    justify-content: center;
+    padding: 3vh 3vw 8vh;
+  }
+  /* 照片按原始比例完整显示 */
+  .slide .photo-card {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f0e8;
+  }
+  .slide .photo-card img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 72vh;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+  .slide.has-multi-row .photo-card img {
+    max-height: 46vh;
+  }
+  .slide.has-multi-row .layout-left-big > .photo-card:first-child img,
+  .slide.has-multi-row .layout-right-big > .photo-card:last-child img,
+  .slide.has-multi-row .layout-1-2 > .photo-card:first-child img {
+    max-height: 50vh;
+  }
+  .slide.has-multi-row .layout-left-big .right-stack .photo-card img,
+  .slide.has-multi-row .layout-right-big .left-stack .photo-card img,
+  .slide.has-multi-row .layout-1-2 .small-col .photo-card img {
+    max-height: 22vh;
+  }
+  .slide.cover .cover-hero {
+    width: auto;
+    max-width: min(520px, 88vw);
+    height: auto;
+    aspect-ratio: unset;
+    margin-bottom: 1.5vh;
+  }
+  .slide.cover .cover-hero img {
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    object-position: center center;
+  }
+  .slide.cover .cover-title {
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    margin-bottom: 8px;
+  }
+  .slide.cover .cover-song {
+    margin-bottom: 2vh;
+    font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+    padding: 12px 36px;
+  }
+  .slide .section-header {
+    margin-bottom: 0.5vh;
+    flex-shrink: 0;
+  }
+  .slide .section-title {
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    margin-bottom: 2px;
+  }
+  .slide .section-desc {
+    font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+    line-height: 1.4;
+  }
+  .slide .section-tag {
+    font-size: 0.85rem;
+    padding: 6px 20px;
+  }
+  .slide .gap-top,
+  .slide .gap-top-lg {
+    margin-top: 1.2vh;
+  }
+  .slide .layout-left-big,
+  .slide .layout-right-big,
+  .slide .layout-1-2 {
+    align-items: stretch;
+  }
+  .slide .layout-left-big .right-stack,
+  .slide .layout-right-big .left-stack,
+  .slide .layout-1-2 .small-col {
+    justify-content: space-between;
+  }
+  .slide .finale-grid {
+    gap: 12px;
+    max-width: 100%;
+  }
+  .slide .finale-grid .photo-card img {
+    max-height: 30vh;
+  }
+  .slide .finale-text {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+  .slide .finale-sub {
+    margin-bottom: 1.5vh;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+  }
+  .slide .divider { padding: 0.8vh 0; font-size: 1rem; }
+  .slide .finale-bottom { margin-top: 0.8vh; font-size: 0.85rem; }
+
+  .slideshow .slide.section:nth-child(odd) { background: #fff9f0; }
+  .slideshow .slide.section:nth-child(even) { background: #fff0f7; }
+
+  .slide-indicator {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 8000;
+    padding: 12px 20px 18px;
+    background: linear-gradient(transparent, rgba(255,249,240,0.95));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .slide-indicator.visible { opacity: 1; }
+  .slide-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .slide-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffb3cc;
+    opacity: 0.4;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .slide-dot.active {
+    opacity: 1;
+    background: #ff6b9d;
+    transform: scale(1.25);
+  }
+  .slide-timer {
+    height: 3px;
+    background: rgba(255,179,204,0.35);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .slide-timer-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #ff6b9d, #ff8c42, #ffd700);
+    border-radius: 2px;
+  }
+  .slide-timer-bar.running {
+    animation: timerFill var(--slide-duration, 5.5s) linear forwards;
+  }
+  @keyframes timerFill {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+  .auto-hint {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 8001;
+    color: #c0437a;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .auto-hint.visible { opacity: 0.7; }
+
+  /* ========== 章节通用 ========== */
+  .section {
+    position: relative;
+    padding: 70px 5vw;
+    z-index: 1;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .section-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b9d, #ff8c42);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 5px 18px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: #2d2d2d;
+    letter-spacing: 3px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .section-title em {
+    font-style: normal;
+    background: linear-gradient(135deg, #ff6b9d, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: #888;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  /* ========== 照片布局 ========== */
+  /* 单张全宽 */
+  .layout-full img {
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    object-fit: cover;
+  }
+
+  /* 两列 */
+  .layout-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* 三列 */
+  .layout-3col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* 左大右小 */
+  .layout-left-big {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 18px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .layout-left-big .right-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* 右大左小 */
+  .layout-right-big {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 18px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .layout-right-big .left-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* 1大+2小横排 */
+  .layout-1-2 {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 18px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .layout-1-2 .small-col {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* 马赛克：2+3 */
+  .layout-mosaic {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto auto;
+    gap: 18px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .layout-mosaic .span2 { grid-column: span 2; }
+  .layout-mosaic .span3 { grid-column: span 3; }
+
+  /* 通用图片样式 */
+  .photo-card {
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    background: #f0f0f0;
+    line-height: 0;
+  }
+  .photo-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 48px rgba(255,100,150,0.2);
+  }
+  .photo-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center center;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .photo-card:hover img { transform: scale(1.06); }
+
+  /* 固定高度 */
+  .h-250 { height: 250px; }
+  .h-300 { height: 300px; }
+  .h-350 { height: 350px; }
+  .h-400 { height: 400px; }
+  .h-480 { height: 480px; }
+  .h-200 { height: 200px; }
+  .h-180 { height: 180px; }
+  .h-192 { height: 192px; }
+  .h-202 { height: 202px; }
+  .h-215 { height: 215px; }
+  .h-217 { height: 217px; }
+  .h-225 { height: 225px; }
+  .h-230 { height: 230px; }
+  .h-232 { height: 232px; }
+  .h-260 { height: 260px; }
+  .h-270 { height: 270px; }
+  .h-280 { height: 280px; }
+  .h-320 { height: 320px; }
+  .h-330 { height: 330px; }
+  .h-380 { height: 380px; }
+  .h-420 { height: 420px; }
+  .h-450 { height: 450px; }
+  .h-475 { height: 475px; }
+
+  /* ========== 开场播放层 ========== */
+  .intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #ffe0ec 0%, #fff3cd 50%, #d4f5ff 100%);
+    padding: 40px 24px;
+    text-align: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .intro-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .intro-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 25%, rgba(255,182,193,0.45) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(173,216,230,0.45) 0%, transparent 40%);
+  }
+  .intro-content { position: relative; z-index: 1; }
+  .intro-stars {
+    font-size: 2rem;
+    letter-spacing: 10px;
+    margin-bottom: 24px;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+  .intro-theme {
+    font-size: clamp(2.2rem, 7vw, 4rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d, #ff8c42, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+  .intro-class {
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    color: #c0437a;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .intro-name {
+    font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+    color: #e05c8a;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  .intro-tagline {
+    font-size: 0.95rem;
+    color: #999;
+    letter-spacing: 2px;
+    margin-bottom: 48px;
+  }
+  .play-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #ff6b9d, #ff8c42);
+    color: white;
+    font-size: 2.4rem;
+    cursor: pointer;
+    box-shadow: 0 12px 40px rgba(255,107,157,0.45);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding-left: 6px;
+  }
+  .play-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 16px 50px rgba(255,107,157,0.55);
+  }
+  .play-btn:active { transform: scale(0.96); }
+  .play-hint {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #b06090;
+    letter-spacing: 2px;
+  }
+
+  /* 音乐控制按钮 */
+  .music-toggle {
+    position: fixed;
+    bottom: 72px;
+    right: 24px;
+    z-index: 9001;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #ffb3cc;
+    background: rgba(255,255,255,0.9);
+    color: #c0437a;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(255,100,150,0.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+    transition: transform 0.2s ease;
+  }
+  .music-toggle.visible { display: flex; }
+  .music-toggle:hover { transform: scale(1.1); }
+  .music-toggle.paused { opacity: 0.6; }
+
+  /* 间距 */
+  .gap-top { margin-top: 16px; }
+  .gap-top-lg { margin-top: 28px; }
+
+  /* ========== 结尾 ========== */
+  .finale {
+    background: linear-gradient(160deg, #ffe0ec, #fff3cd, #d4f5ff);
+    padding: 80px 5vw;
+    text-align: center;
+  }
+  .finale-text {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b9d, #ff8c42, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 6px;
+    margin-bottom: 12px;
+  }
+  .finale-sub {
+    color: #c0437a;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    font-weight: 600;
+    margin-bottom: 50px;
+  }
+  .finale-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+  }
+  .finale-bottom {
+    margin-top: 50px;
+    font-size: 0.9rem;
+    color: #b06090;
+    letter-spacing: 2px;
+  }
+
+  /* 分隔符 */
+  .divider {
+    text-align: center;
+    padding: 20px 0;
+    color: #ffb3cc;
+    font-size: 1.4rem;
+    letter-spacing: 8px;
+  }
+
+  /* 响应式 */
+  @media (max-width: 600px) {
+    .layout-2col { grid-template-columns: 1fr; }
+    .layout-3col { grid-template-columns: 1fr 1fr; }
+    .layout-left-big { grid-template-columns: 1fr; }
+    .layout-right-big { grid-template-columns: 1fr; }
+    .layout-1-2 { grid-template-columns: 1fr; }
+    .layout-mosaic { grid-template-columns: 1fr 1fr; }
+    .layout-mosaic .span2,
+    .layout-mosaic .span3 { grid-column: span 1; }
+    .finale-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* 五彩纸屑 canvas */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+
+<!-- 开场：点击播放后进入相册 -->
+<div class="intro-overlay" id="intro">
+  <div class="intro-content">
+    <div class="intro-stars">🎓 ✨ 🎈</div>
+    <h1 class="intro-theme">《有你就幸福》</h1>
+    <p class="intro-class">大二班</p>
+    <p class="intro-name">季已晴</p>
+    <p class="intro-tagline">幼儿园毕业了 · 成长相册</p>
+    <button class="play-btn" id="play-btn" aria-label="开始播放">▶</button>
+    <p class="play-hint">点击开始，自动播放相册</p>
+  </div>
+</div>
+
+<audio id="bgm" loop preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+<button class="music-toggle" id="music-toggle" aria-label="音乐开关">🎵</button>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- 气球背景 -->
+<div class="balloons" id="balloons"></div>
+
+<div class="auto-hint" id="auto-hint">自动播放中 · 无需滑动</div>
+<div class="slide-indicator" id="slide-indicator">
+  <div class="slide-dots" id="slide-dots"></div>
+  <div class="slide-timer"><div class="slide-timer-bar" id="timer-bar"></div></div>
+</div>
+
+<div class="slideshow" id="slideshow">
+<div class="slideshow-track" id="slideshow-track">
+
+<!-- ========== 封面 ========== -->
+<div class="cover slide">
+  <div class="cover-content">
+    <div class="cover-stars">🎓 ✨ 🎈</div>
+    <h1 class="cover-title">我们毕业了</h1>
+    <p class="cover-sub">大二班 · 季已晴</p>
+    <div class="cover-song">演唱：<span>《有你就幸福》</span></div>
+    <div class="cover-hero">
+      <img src="pic/00366c04c192d1e514eabc9a161991fb.jpg" alt="季已晴">
+    </div>
+    <p style="color:#c0437a;font-size:0.95rem;letter-spacing:2px;font-weight:600;">幼儿园毕业 · 有你就幸福 🎈</p>
+  </div>
+</div>
+
+<!-- ========== 第一章：小时候 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 01</div>
+    <h2 class="section-title">从<em>那一天</em>起</h2>
+    <p class="section-desc">每一个笑脸，都是最美的礼物</p>
+  </div>
+
+  <div class="layout-left-big">
+    <div class="photo-card h-400">
+      <img src="pic/025384470d37269eb3099a08bd03c632.jpg" alt="">
+    </div>
+    <div class="right-stack">
+      <div class="photo-card h-192">
+        <img src="pic/02cd7ba0b230799822108e5b70e6535d.jpg" alt="">
+      </div>
+      <div class="photo-card h-192">
+        <img src="pic/060002ceeecaef15f14c88bac4f04a7b.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 01</div>
+    <h2 class="section-title">从<em>那一天</em>起</h2>
+    <p class="section-desc">每一个笑脸，都是最美的礼物</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-250">
+      <img src="pic/07438b80dd5bdd86eda24893fc891060.jpg" alt="">
+    </div>
+    <div class="photo-card h-250">
+      <img src="pic/12c0708fd415edbc22d0cf27d473cd44.jpg" alt="">
+    </div>
+    <div class="photo-card h-250">
+      <img src="pic/15fc4e63e7516bcfdf6e8b8d8dc1ce39.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第二章：童趣时光 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 02</div>
+    <h2 class="section-title"><em>童趣</em>时光</h2>
+    <p class="section-desc">玩耍是孩子最认真的事</p>
+  </div>
+
+  <div class="layout-2col">
+    <div class="photo-card h-350">
+      <img src="pic/17e276a924cbc7a71839ccdf6a8bfe67.jpg" alt="">
+    </div>
+    <div class="photo-card h-350">
+      <img src="pic/18c6f432acad2f2055f860f78529ebbd.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 02</div>
+    <h2 class="section-title"><em>童趣</em>时光</h2>
+    <p class="section-desc">玩耍是孩子最认真的事</p>
+  </div>
+  <div class="layout-1-2">
+    <div class="photo-card h-400">
+      <img src="pic/22fb2ec33c698adac965bf1c4e08832f.jpg" alt="">
+    </div>
+    <div class="small-col">
+      <div class="photo-card h-192">
+        <img src="pic/26644c4369c925b19113c12a85718748.jpg" alt="">
+      </div>
+      <div class="photo-card h-192">
+        <img src="pic/27054c3d60a6c5cfaa1c9bdcc024097f.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第三章：幼儿园生活 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 03</div>
+    <h2 class="section-title">幼儿园的<em>每一天</em></h2>
+    <p class="section-desc">小小的世界，大大的快乐</p>
+  </div>
+
+  <div class="layout-3col">
+    <div class="photo-card h-280">
+      <img src="pic/2caa2a86dd79cbefd9a3c6117ece335e.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/427485c2761a60c2bd3b2e357215f98a.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/44fb3fda2f09cc8dc7cffaa1db60070e.jpg" alt="">
+    </div>
+  </div>
+
+  <div class="layout-mosaic gap-top">
+    <div class="photo-card h-280 span3">
+      <img src="pic/4655d69cb69065ba8b481b66b6d3a5a8.jpg" alt="">
+    </div>
+    <div class="photo-card h-280 span2">
+      <img src="pic/46d7a84a85036eb0cb86d816b48b92d0.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 03</div>
+    <h2 class="section-title">幼儿园的<em>每一天</em></h2>
+    <p class="section-desc">小小的世界，大大的快乐</p>
+  </div>
+  <div class="layout-2col">
+    <div class="photo-card h-300">
+      <img src="pic/480897654cb3876303e44ef1c1cda8a3.jpg" alt="">
+    </div>
+    <div class="photo-card h-300">
+      <img src="pic/480fc9bf4dbe304d5fefa409f4ce8430.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第四章：成长瞬间 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 04</div>
+    <h2 class="section-title">一寸<em>光阴</em>一寸金</h2>
+    <p class="section-desc">看你一天天长大，是最幸福的事</p>
+  </div>
+
+  <div class="layout-right-big">
+    <div class="left-stack">
+      <div class="photo-card h-230">
+        <img src="pic/4a8c315f3ffe4454e2d21a5ecb03cdeb.jpg" alt="">
+      </div>
+      <div class="photo-card h-230">
+        <img src="pic/4b634f90a0feaebdb99bebac922efb08.jpg" alt="">
+      </div>
+    </div>
+    <div class="photo-card h-480">
+      <img src="pic/4dacdc3cbca03ececbe8f53d0278a5ac.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 04</div>
+    <h2 class="section-title">一寸<em>光阴</em>一寸金</h2>
+    <p class="section-desc">看你一天天长大，是最幸福的事</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-260">
+      <img src="pic/4e51d8bb8f5fb6d4a3fb9ec6ead42ae3.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/52498791c4e925fdf25906bde4e125f8.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/52f4f29fc87945d9170a84322fe24649.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第五章：户外探索 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 05</div>
+    <h2 class="section-title"><em>探索</em>世界</h2>
+    <p class="section-desc">好奇的眼睛，看见最美的风景</p>
+  </div>
+
+  <div class="layout-left-big">
+    <div class="photo-card h-420">
+      <img src="pic/54724adb70408ce3c906de8f13595724.jpg" alt="">
+    </div>
+    <div class="right-stack">
+      <div class="photo-card h-202">
+        <img src="pic/55bb9baadf033eca5d3627c8c742d4da.jpg" alt="">
+      </div>
+      <div class="photo-card h-202">
+        <img src="pic/56ec0d9bb6c29d09d61f5c4575bd1d65.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 05</div>
+    <h2 class="section-title"><em>探索</em>世界</h2>
+    <p class="section-desc">好奇的眼睛，看见最美的风景</p>
+  </div>
+  <div class="layout-2col">
+    <div class="photo-card h-320">
+      <img src="pic/58c7c1e3953e6b9a2449c62bc2a26384.jpg" alt="">
+    </div>
+    <div class="photo-card h-320">
+      <img src="pic/5c70a1902c3c77d5e0fec7cc24b1db5a.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第六章：节日庆典 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 06</div>
+    <h2 class="section-title"><em>节日</em>的色彩</h2>
+    <p class="section-desc">每一个节日，都是专属的记忆</p>
+  </div>
+
+  <div class="layout-3col">
+    <div class="photo-card h-270">
+      <img src="pic/5c82ffcf45b298a01d5b42864de95dde.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/5d0c5b31d8c4f588eea5c215f048ef60.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/6245257e0b22b407346fb3b9785fcb29.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 06</div>
+    <h2 class="section-title"><em>节日</em>的色彩</h2>
+    <p class="section-desc">每一个节日，都是专属的记忆</p>
+  </div>
+  <div class="layout-mosaic">
+    <div class="photo-card h-300 span2">
+      <img src="pic/63880653b50a8a7fd766ce3b3fff9eb6.jpg" alt="">
+    </div>
+    <div class="photo-card h-300 span3">
+      <img src="pic/638e96ca40b9d16a7dfeafdb1bc3d0f7.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第七章：家的温度 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 07</div>
+    <h2 class="section-title">家的<em>温度</em></h2>
+    <p class="section-desc">爱，就是陪伴</p>
+  </div>
+
+  <div class="layout-1-2">
+    <div class="photo-card h-450">
+      <img src="pic/699aa97c4ab34565add855f93404c9ed.jpg" alt="">
+    </div>
+    <div class="small-col">
+      <div class="photo-card h-217">
+        <img src="pic/699cf5e83bea578cfa3e4cf188a57491.jpg" alt="">
+      </div>
+      <div class="photo-card h-217">
+        <img src="pic/6af43a62d28cfa7ca846c6fae244663a.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 07</div>
+    <h2 class="section-title">家的<em>温度</em></h2>
+    <p class="section-desc">爱，就是陪伴</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-260">
+      <img src="pic/71dd2673929921d348d19b7b2c91b57a.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/7c4c1a1c41d364d59f35c0f06ecc5c7b.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/838bcced6839482458fb0352a88b6fcb.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第八章：舞台梦想 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 08</div>
+    <h2 class="section-title">小小<em>舞台</em></h2>
+    <p class="section-desc">闪光的不只是舞台，还有你的笑容</p>
+  </div>
+
+  <div class="layout-2col">
+    <div class="photo-card h-380">
+      <img src="pic/8819dc300fe4619951cdfadc72a6e205.jpg" alt="">
+    </div>
+    <div class="photo-card h-380">
+      <img src="pic/8e85f719baa39b12d93e7bd73b28e006.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 08</div>
+    <h2 class="section-title">小小<em>舞台</em></h2>
+    <p class="section-desc">闪光的不只是舞台，还有你的笑容</p>
+  </div>
+  <div class="layout-right-big">
+    <div class="left-stack">
+      <div class="photo-card h-215">
+        <img src="pic/91685a8810300534f48b386d6ae5ab5b.jpg" alt="">
+      </div>
+      <div class="photo-card h-215">
+        <img src="pic/9a7cbd4b60e519cac24af308f2629992.jpg" alt="">
+      </div>
+    </div>
+    <div class="photo-card h-450">
+      <img src="pic/9f04f4aea7a829674770933a683d5499.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第九章：精彩瞬间 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 09</div>
+    <h2 class="section-title"><em>精彩</em>瞬间</h2>
+    <p class="section-desc">每张照片，都是时间的礼物</p>
+  </div>
+
+  <div class="layout-3col">
+    <div class="photo-card h-280">
+      <img src="pic/a417d383b207895517c076970a853ee4.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/aff2cfe19a08c2fb7f0016cf297b109f.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/b129c4101bf6661e946ddef37f250ce7.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 09</div>
+    <h2 class="section-title"><em>精彩</em>瞬间</h2>
+    <p class="section-desc">每张照片，都是时间的礼物</p>
+  </div>
+  <div class="layout-left-big">
+    <div class="photo-card h-400">
+      <img src="pic/b786cccf1a12ddc57ec6cedb77ee2c96.jpg" alt="">
+    </div>
+    <div class="right-stack">
+      <div class="photo-card h-192">
+        <img src="pic/ba11b04f28ed043daa15649d577f1164.jpg" alt="">
+      </div>
+      <div class="photo-card h-192">
+        <img src="pic/ba2805c6d0689f19789521c80464d617.jpg" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第十章：奇趣日常 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 10</div>
+    <h2 class="section-title">奇趣<em>日常</em></h2>
+    <p class="section-desc">平凡的日子里，藏着最多的惊喜</p>
+  </div>
+
+  <div class="layout-mosaic">
+    <div class="photo-card h-300 span2">
+      <img src="pic/c00055ced124362ce9a1e218aa0798d5.jpg" alt="">
+    </div>
+    <div class="photo-card h-300 span3">
+      <img src="pic/c5d46df12fb14e57d13ff47b1c3cf069.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 10</div>
+    <h2 class="section-title">奇趣<em>日常</em></h2>
+    <p class="section-desc">平凡的日子里，藏着最多的惊喜</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-260">
+      <img src="pic/c64d301d1f4de1ae3407bd4107e26223.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/c8b48564c15ffb8dce0adf5cd7c78a07.jpg" alt="">
+    </div>
+    <div class="photo-card h-260">
+      <img src="pic/cbb7a532feeeac985ef11dfe67e0dc1c.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 10</div>
+    <h2 class="section-title">奇趣<em>日常</em></h2>
+    <p class="section-desc">平凡的日子里，藏着最多的惊喜</p>
+  </div>
+  <div class="layout-2col">
+    <div class="photo-card h-330">
+      <img src="pic/cc4df1bd3e84f2946e2324d2ce06ae51.jpg" alt="">
+    </div>
+    <div class="photo-card h-330">
+      <img src="pic/ce36fb18aa41fde87f1b3b0d755d3cb9.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第十一章：有你的地方 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 11</div>
+    <h2 class="section-title">有你的<em>地方</em></h2>
+    <p class="section-desc">有你就幸福，无论在哪里</p>
+  </div>
+
+  <div class="layout-1-2">
+    <div class="photo-card h-480">
+      <img src="pic/d3cb4efc3f83894ecfe766776573d1ad.jpg" alt="">
+    </div>
+    <div class="small-col">
+      <div class="photo-card h-232">
+        <img src="pic/d7c305329403cf4854235e51bb9a9daf.jpg" alt="">
+      </div>
+      <div class="photo-card h-232">
+        <img src="pic/da1d5e5dbcdb012f409162a18e373d27.jpg" alt="">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 11</div>
+    <h2 class="section-title">有你的<em>地方</em></h2>
+    <p class="section-desc">有你就幸福，无论在哪里</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-270">
+      <img src="pic/db21251184f75ee6540e5add933ed4c7.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/dbc2d4e926fb06f6fe40ccf6e9054ff6.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/dc36563a31e1f285760e7ccea74bce42.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 第十二章：最美笑容 ========== -->
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 12</div>
+    <h2 class="section-title">最美的<em>笑容</em></h2>
+    <p class="section-desc">这笑容，是全世界最好看的风景</p>
+  </div>
+
+  <div class="layout-right-big">
+    <div class="left-stack">
+      <div class="photo-card h-225">
+        <img src="pic/ddae1265183558bdc4cb70be3c2c4616.jpg" alt="">
+      </div>
+      <div class="photo-card h-225">
+        <img src="pic/de453f0fab686ab3ac83ddc374af8c74.jpg" alt="">
+      </div>
+    </div>
+    <div class="photo-card h-475">
+      <img src="pic/e1349abdd2043b1f32c91a7619abe8da.jpg" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="section slide">
+  <div class="section-header">
+    <div class="section-tag">Chapter 12</div>
+    <h2 class="section-title">最美的<em>笑容</em></h2>
+    <p class="section-desc">这笑容，是全世界最好看的风景</p>
+  </div>
+  <div class="layout-3col">
+    <div class="photo-card h-270">
+      <img src="pic/f1ebab54acb5c0d2c0cfd3528edc1e99.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/f3cdd1905fc958359890dc9bbd1ea061.jpg" alt="">
+    </div>
+    <div class="photo-card h-270">
+      <img src="pic/f5c4624c46d9e3b9f8873a46950f57ec.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ========== 结尾 ========== -->
+<div class="finale slide">
+  <div class="section-header">
+    <div class="section-tag">Graduation</div>
+    <div class="finale-text">有你就幸福</div>
+    <div class="finale-sub">大二班 · 季已晴 · 《有你就幸福》</div>
+  </div>
+
+  <div class="finale-grid">
+    <div class="photo-card h-280">
+      <img src="pic/f96c74e2407052635f62244a2a67a4ff.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/f9b2cce1a793bc6277193dab2d3c9f2d.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/fa1b5cbbf22a2915131e4cbb8bf5f901.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/fcc392addc0a4a29380ef9b57a9e74d6.jpg" alt="">
+    </div>
+    <div class="photo-card h-280">
+      <img src="pic/fd10cdf253df0a91203c5498e38984d6.jpg" alt="">
+    </div>
+    <div class="photo-card h-280" style="background:linear-gradient(135deg,#ffe0ec,#fff3cd);display:flex;align-items:center;justify-content:center;font-size:4rem;border-radius:16px;">
+      🎈
+    </div>
+  </div>
+
+  <div class="divider">✿ ✿ ✿ ✿ ✿</div>
+  <div class="finale-bottom">
+    <p>愿你永远快乐，有你就幸福</p>
+    <p style="margin-top:8px;opacity:0.6;font-size:0.8rem;">幼儿园毕业 · 大二班 · 季已晴</p>
+  </div>
+</div>
+
+</div><!-- /slideshow-track -->
+</div><!-- /slideshow -->
+
+<script>
+// ===== 开场播放 & 背景音乐 =====
+const intro = document.getElementById('intro');
+const playBtn = document.getElementById('play-btn');
+const bgm = document.getElementById('bgm');
+const musicToggle = document.getElementById('music-toggle');
+
+function startExperience() {
+  intro.classList.add('hidden');
+  musicToggle.classList.add('visible');
+  document.getElementById('auto-hint').classList.add('visible');
+  document.getElementById('slide-indicator').classList.add('visible');
+  bgm.play().catch(() => {});
+  startSlideshow();
+  setTimeout(() => {
+    document.getElementById('confetti-canvas').dispatchEvent(new Event('restart-confetti'));
+    document.getElementById('auto-hint').classList.remove('visible');
+  }, 4000);
+}
+
+playBtn.addEventListener('click', startExperience);
+
+// ===== 自动轮播跳转（垂直滑动）=====
+const SLIDE_DURATION = 6000;
+const track = document.getElementById('slideshow-track');
+let slides = document.querySelectorAll('#slideshow-track .slide');
+const slideDots = document.getElementById('slide-dots');
+const timerBar = document.getElementById('timer-bar');
+let currentSlide = 0;
+let slideTimer = null;
+
+function getSlideHeight() {
+  return window.innerHeight;
+}
+
+function unwrapLegacyInner() {
+  document.querySelectorAll('.slide-inner').forEach(inner => {
+    const slide = inner.parentElement;
+    while (inner.firstChild) slide.insertBefore(inner.firstChild, inner);
+    inner.remove();
+  });
+}
+
+function getSlideLayouts(slide) {
+  const content = slide.querySelector('.slide-content');
+  const root = content || slide;
+  return Array.from(root.querySelectorAll(':scope > [class*="layout-"]'));
+}
+
+function mergeChapterSlides() {
+  const track = document.getElementById('slideshow-track');
+  let merged = true;
+  while (merged) {
+    merged = false;
+    const sections = track.querySelectorAll('.slide.section');
+    for (let i = 0; i < sections.length - 1; i++) {
+      const a = sections[i];
+      const b = sections[i + 1];
+      const tagA = a.querySelector('.section-tag')?.textContent.trim();
+      const tagB = b.querySelector('.section-tag')?.textContent.trim();
+      if (!tagA || tagA !== tagB) continue;
+
+      const countA = getSlideLayouts(a).length;
+      const countB = getSlideLayouts(b).length;
+      if (countA + countB > 2) continue;
+
+      const target = a.querySelector('.slide-content') || a;
+      getSlideLayouts(b).forEach(layout => {
+        if (!layout.classList.contains('gap-top')) layout.classList.add('gap-top');
+        target.appendChild(layout);
+      });
+      b.remove();
+      merged = true;
+      break;
+    }
+  }
+}
+
+function splitSlidesMaxTwoRows(maxRows = 2) {
+  const track = document.getElementById('slideshow-track');
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const slide of track.querySelectorAll('.slide.section')) {
+      const content = slide.querySelector('.slide-content');
+      if (!content) continue;
+      const layouts = getSlideLayouts(slide);
+      if (layouts.length <= maxRows) continue;
+
+      const header = content.querySelector('.section-header');
+      const toMove = layouts.slice(maxRows);
+      toMove.forEach(layout => layout.remove());
+
+      const newSlide = document.createElement('div');
+      newSlide.className = 'section slide';
+      const newContent = document.createElement('div');
+      newContent.className = 'slide-content';
+      if (header) newContent.appendChild(header.cloneNode(true));
+      toMove.forEach((layout, idx) => {
+        if (idx > 0 && !layout.classList.contains('gap-top')) {
+          layout.classList.add('gap-top');
+        }
+        newContent.appendChild(layout);
+      });
+      newSlide.appendChild(newContent);
+      slide.after(newSlide);
+      changed = true;
+      break;
+    }
+  }
+}
+
+function wrapSlideContent() {
+  document.querySelectorAll('#slideshow-track .slide').forEach(slide => {
+    if (slide.querySelector('.slide-content')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'slide-content';
+    while (slide.firstChild) wrap.appendChild(slide.firstChild);
+    slide.appendChild(wrap);
+  });
+}
+
+function tagSlideRows() {
+  slides.forEach(slide => {
+    slide.classList.toggle('has-multi-row', getSlideLayouts(slide).length >= 2);
+  });
+}
+
+function fitSlideContent(slide) {
+  const content = slide.querySelector('.slide-content');
+  if (!content) return;
+  content.style.transform = 'none';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const maxH = getSlideHeight() - 52;
+      const h = content.scrollHeight;
+      if (h > maxH) {
+        const scale = Math.max(0.92, maxH / h);
+        content.style.transform = `scale(${scale})`;
+      }
+    });
+  });
+}
+
+function syncSlideHeights() {
+  const h = getSlideHeight();
+  slides.forEach(slide => { slide.style.height = h + 'px'; });
+  track.style.transform = `translateY(-${currentSlide * h}px)`;
+}
+
+function buildDots() {
+  slideDots.innerHTML = '';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'slide-dot' + (i === currentSlide ? ' active' : '');
+    slideDots.appendChild(dot);
+  });
+}
+
+function resetTimerBar() {
+  timerBar.classList.remove('running');
+  void timerBar.offsetWidth;
+  timerBar.style.setProperty('--slide-duration', SLIDE_DURATION + 'ms');
+  timerBar.classList.add('running');
+}
+
+function goToSlide(index) {
+  const next = (index + slides.length) % slides.length;
+  if (slideDots.children[currentSlide]) {
+    slideDots.children[currentSlide].classList.remove('active');
+  }
+  currentSlide = next;
+  syncSlideHeights();
+  fitSlideContent(slides[currentSlide]);
+  if (slideDots.children[currentSlide]) {
+    slideDots.children[currentSlide].classList.add('active');
+  }
+  resetTimerBar();
+  if (currentSlide === slides.length - 1) {
+    setTimeout(() => {
+      document.getElementById('confetti-canvas').dispatchEvent(new Event('restart-confetti'));
+    }, 600);
+  }
+}
+
+function startSlideshow() {
+  unwrapLegacyInner();
+  mergeChapterSlides();
+  wrapSlideContent();
+  splitSlidesMaxTwoRows(2);
+  slides = document.querySelectorAll('#slideshow-track .slide');
+  tagSlideRows();
+  currentSlide = 0;
+  syncSlideHeights();
+  buildDots();
+  slides.forEach(s => fitSlideContent(s));
+  resetTimerBar();
+  if (slideTimer) clearInterval(slideTimer);
+  slideTimer = setInterval(() => goToSlide(currentSlide + 1), SLIDE_DURATION);
+}
+
+window.addEventListener('resize', () => {
+  syncSlideHeights();
+  if (slides[currentSlide]) fitSlideContent(slides[currentSlide]);
+});
+
+window.addEventListener('load', () => {
+  tagSlideRows();
+  slides.forEach(s => fitSlideContent(s));
+});
+
+document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+musicToggle.addEventListener('click', () => {
+  if (bgm.paused) {
+    bgm.play();
+    musicToggle.classList.remove('paused');
+    musicToggle.textContent = '🎵';
+  } else {
+    bgm.pause();
+    musicToggle.classList.add('paused');
+    musicToggle.textContent = '🔇';
+  }
+});
+
+// ===== 气球生成 =====
+const balloonColors = ['#ff6b9d','#ff8c42','#ffd700','#6bcfff','#b2f5a8','#d4a8ff'];
+const container = document.getElementById('balloons');
+for (let i = 0; i < 18; i++) {
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = Math.random() * 100 + '%';
+  b.style.width = (30 + Math.random() * 30) + 'px';
+  b.style.height = (38 + Math.random() * 38) + 'px';
+  b.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  b.style.color = b.style.background;
+  b.style.animationDuration = (8 + Math.random() * 12) + 's';
+  b.style.animationDelay = (Math.random() * 15) + 's';
+  container.appendChild(b);
+}
+
+// ===== 五彩纸屑（点击播放后触发）=====
+(function() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = ['#ff6b9d','#ff8c42','#ffd700','#6bcfff','#b2f5a8','#d4a8ff','#ff6b6b'];
+
+  function launchConfetti() {
+    resize();
+    const pieces = Array.from({length: 120}, () => ({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * 200,
+      r: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: 2 + Math.random() * 3,
+      angle: Math.random() * 360,
+      spin: (Math.random() - 0.5) * 6,
+      drift: (Math.random() - 0.5) * 2
+    }));
+    let frame = 0;
+    function draw() {
+      if (frame > 200) { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.y += p.speed;
+        p.x += p.drift;
+        p.angle += p.spin;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, 1 - frame / 160);
+        ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 2.5);
+        ctx.restore();
+      });
+      frame++;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  canvas.addEventListener('restart-confetti', launchConfetti);
+})();
+</script>
+</body>
+</html>
